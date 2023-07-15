@@ -1,0 +1,34 @@
+*,
+::after,
+::before{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container{
+    width: 300px;
+    background-color: #000;
+    border-radius: 12px;
+}
+
+.screen{
+    height: 50px;
+    background-color: #fff;
+    margin: 10px;
+}
+
+.cover{
+
+}
+
+.cover button{
+
+}
