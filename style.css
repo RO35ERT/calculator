@@ -11,12 +11,14 @@ body{
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background-color: #000;
 }
 
 .container{
     width: 290px;
     background-color: #000;
     border-radius: 12px;
+    box-shadow: 0 0 10px #fff;
 }
 
 .screen{
