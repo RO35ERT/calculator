@@ -1,58 +1,149 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const expressionDisplay = document.getElementById('expression-display');
+    const resultDisplay = document.getElementById('result-display');
+    const keypad = document.querySelector('.keypad');
+    const themeToggle = document.getElementById('theme-toggle');
 
-numbers = document.querySelectorAll('#num');
-calscreen = document.querySelector('.screen');
+    let currentExpression = '';
+    let resultCalculated = false;
 
-root = document.querySelector('#root');
-pi = document.querySelector('#pi')
+    // --- Main Event Handler ---
+    keypad.addEventListener('click', (e) => {
+        const target = e.target;
+        if (!target.matches('button')) return;
 
-clear = document.querySelector('#clear');
-del = document.querySelector('#del');
+        const { action, value } = target.dataset;
 
-operator = document.querySelectorAll('#op');
+        if (action) {
+            handleAction(action, value);
+        } else if (value) {
+            handleValue(value);
+        }
+    });
 
+    // --- Input Handlers ---
+    const handleValue = (value) => {
+        if (resultCalculated) {
+            currentExpression = '';
+            resultCalculated = false;
+        }
+        currentExpression += value;
+        updateDisplay();
+    };
 
-equalto = document.querySelector('#equalto');
+    const handleAction = (action) => {
+        switch (action) {
+            case 'clear':
+                clearAll();
+                break;
+            case 'delete':
+                deleteLast();
+                break;
+            case 'decimal':
+                addDecimal();
+                break;
+            case 'evaluate':
+                evaluate();
+                break;
+            case 'sqrt':
+                applyFunction('Math.sqrt');
+                break;
+        }
+    };
 
-clear.addEventListener('click',()=>{
-    calscreen.innerText = "";
-})
+    // --- Core Logic Functions ---
+    const clearAll = () => {
+        currentExpression = '';
+        expressionDisplay.textContent = '';
+        resultDisplay.textContent = '0';
+        resultCalculated = false;
+    };
 
-del.addEventListener('click',()=>{
-   
-    const nums = calscreen.innerText;
-    const newnum = nums.slice(0, nums.length-1);
-    calscreen.innerText = newnum;    
-})
+    const deleteLast = () => {
+        if (resultCalculated) {
+            clearAll();
+            return;
+        }
+        currentExpression = currentExpression.slice(0, -1);
+        updateDisplay();
+    };
+    
+    const addDecimal = () => {
+        if (resultCalculated) {
+             currentExpression = '0.';
+             resultCalculated = false;
+        } else {
+            // Prevent multiple decimals in the same number segment
+            const segments = currentExpression.split(/[\+\-\*\/%]/);
+            if (!segments[segments.length - 1].includes('.')) {
+                currentExpression += '.';
+            }
+        }
+        updateDisplay();
+    };
 
-root.addEventListener('click',()=>{
-    const nums = calscreen.innerText;
-    const numbedroot = Math.sqrt(nums);
+    const evaluate = () => {
+        if (currentExpression === '') return;
+        try {
+            const sanitizedExpression = currentExpression
+                .replace(/×/g, '*')
+                .replace(/÷/g, '/')
+                .replace(/−/g, '-');
 
-    calscreen.innerText= numbedroot;
-})
+            // Using new Function() is safer than eval()
+            const calculate = new Function('return ' + sanitizedExpression);
+            const result = parseFloat(calculate().toFixed(10)); // Fix floating point issues
+            
+            expressionDisplay.textContent = currentExpression + '=';
+            resultDisplay.textContent = result;
+            currentExpression = result.toString();
+            resultCalculated = true;
 
-pi.addEventListener('click',()=>{
-    calscreen.innerText += Math.PI; 
-})
+        } catch (error) {
+            resultDisplay.textContent = 'Error';
+            currentExpression = '';
+            resultCalculated = true;
+        }
+    };
+    
+    const applyFunction = (func) => {
+        try {
+            const result = eval(`${func}(${currentExpression})`);
+            expressionDisplay.textContent = `${func.replace('Math.', '')}(${currentExpression})`;
+            resultDisplay.textContent = parseFloat(result.toFixed(10));
+            currentExpression = result.toString();
+            resultCalculated = true;
+        } catch (error) {
+            resultDisplay.textContent = 'Error';
+            currentExpression = '';
+            resultCalculated = true;
+        }
+    };
 
-numbers.forEach(e => {
-    e.addEventListener('click',()=>{
-        calscreen.innerText += e.value;
-    })
+    const updateDisplay = () => {
+        expressionDisplay.textContent = currentExpression
+            .replace(/\*/g, '×')
+            .replace(/\//g, '÷')
+            .replace(/-/g, '−');
+        if (currentExpression === '') {
+            resultDisplay.textContent = '0';
+        }
+    };
+
+    // --- Theme Switcher Logic ---
+    const setInitialTheme = () => {
+        const savedTheme = localStorage.getItem('calculator-theme') || 'dark';
+        document.body.dataset.theme = savedTheme;
+        themeToggle.checked = savedTheme === 'light';
+    };
+    
+    themeToggle.addEventListener('change', () => {
+        const newTheme = themeToggle.checked ? 'light' : 'dark';
+        document.body.dataset.theme = newTheme;
+        localStorage.setItem('calculator-theme', newTheme);
+    });
+    
+    // Initialize
+    setInitialTheme();
+    clearAll();
 });
-
-operator.forEach((e)=>{
-    e.addEventListener('click',()=>{
-        calscreen.innerText += e.value;
-    })
-})
-
-equalto.addEventListener('click',()=>{
-    const nums = calscreen.innerText;
-    const answer = eval(nums)
-
-    calscreen.innerText = answer;
-})
-
-
-

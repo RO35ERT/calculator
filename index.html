@@ -2,42 +2,53 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
     <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
 </head>
-<body>
-    <div class="container">
+<body data-theme="dark">
+
+    <main class="calculator">
+        <div class="theme-switcher">
+            <label for="theme-toggle" class="switch">
+                <input type="checkbox" id="theme-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+
         <div class="screen">
+            <div id="expression-display" class="expression"></div>
+            <div id="result-display" class="result">0</div>
         </div>
-        <div class="cover">
-            <button id="root">R</button>
-            <button id="pi">pi</button>
-            <button id="pow">^</button>
-            <button id="fact">!</button>
-            <button id="clear">AC</button>
-            <button id="brace">()</button>
-            <button id="rem">%</button>
-            <button id="op" value="/">/</button>
-            <button id="num" value="7">7</button>
-            <button id="num" value="8">8</button>
-            <button id="num" value="9">9</button>
-            <button id="op" value="*">X</button>
-            <button id="num" value="4">4</button>
-            <button id="num" value="5">5</button>
-            <button id="num" value="6">6</button>
-            <button id="op" value="+">+</button>
-            <button id="num" value="1">1</button>
-            <button id="num" value="2">2</button>
-            <button id="num" value="3">3</button>
-            <button id="op" value="-">-</button>
-            <button id="num" value="0">0</button>
-            <button id="dot" disabled value=".">.</button>
-            <button id="del">del</button>
-            <button id="equalto">=</button>
+
+        <div class="keypad">
+            <button class="btn func" data-action="clear">AC</button>
+            <button class="btn func" data-action="delete">DEL</button>
+            <button class="btn operator" data-value="%">%</button>
+            <button class="btn operator" data-value="/">÷</button>
+
+            <button class="btn number" data-value="7">7</button>
+            <button class="btn number" data-value="8">8</button>
+            <button class="btn number" data-value="9">9</button>
+            <button class="btn operator" data-value="*">×</button>
+
+            <button class="btn number" data-value="4">4</button>
+            <button class="btn number" data-value="5">5</button>
+            <button class="btn number" data-value="6">6</button>
+            <button class="btn operator" data-value="-">−</button>
+
+            <button class="btn number" data-value="1">1</button>
+            <button class="btn number" data-value="2">2</button>
+            <button class="btn number" data-value="3">3</button>
+            <button class="btn operator" data-value="+">+</button>
+
+            <button class="btn special" data-action="sqrt">√</button>
+            <button class="btn number" data-value="0">0</button>
+            <button class="btn" data-action="decimal">.</button>
+            <button class="btn equals" data-action="evaluate">=</button>
         </div>
-    </div>
-    <script src="app.js"></script>
+    </main>
+
 </body>
 </html>
