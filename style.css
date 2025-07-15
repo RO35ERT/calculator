@@ -49,14 +49,18 @@ body {
     border-radius: 24px;
     padding: 20px;
     box-shadow: 5px 5px 15px var(--shadow-dark), -5px -5px 15px var(--shadow-light);
-    position: relative;
+    
+    /* Changes for layout */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 /* Theme Switcher */
 .theme-switcher {
-    position: absolute;
-    top: 25px;
-    right: 25px;
+    /* No longer positioned absolutely */
+    align-self: flex-end; /* Aligns the button to the right */
+    margin-bottom: 5px; /* Adds some space above the screen */
 }
 .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
 .switch input { opacity: 0; width: 0; height: 0; }
@@ -71,7 +75,7 @@ input:checked + .slider:before { transform: translateX(20px); }
     background-color: var(--bg-screen);
     border-radius: 16px;
     padding: 20px;
-    margin-bottom: 20px;
+    /* margin-bottom is no longer needed due to parent's gap */
     text-align: right;
     word-wrap: break-word;
     word-break: break-all;
