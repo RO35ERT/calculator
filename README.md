@@ -1,2 +1,2 @@
 # calculator
-Creating a web calculator
+A web calculator
